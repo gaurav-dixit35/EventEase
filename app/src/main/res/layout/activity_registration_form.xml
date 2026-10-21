@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/registration_toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" android:background="@color/primary" app:title="@string/registration_title" app:titleTextColor="@color/on_primary" app:navigationIcon="@drawable/ic_back" app:navigationIconTint="@color/on_primary" app:navigationContentDescription="@string/back" />
+    <ProgressBar android:id="@+id/registration_loading" android:layout_width="40dp" android:layout_height="40dp" android:layout_gravity="center" android:layout_margin="32dp" />
+    <ScrollView android:id="@+id/registration_content" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:visibility="gone">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/registration_event" android:textAppearance="@style/TextAppearance.EventEase.Heading" />
+            <TextView android:id="@+id/registration_event_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Heading" android:layout_marginTop="12dp" />
+            <TextView android:id="@+id/registration_event_summary" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Body" android:layout_marginTop="4dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/registration_profile_notice" android:textAppearance="@style/TextAppearance.EventEase.Body" android:layout_marginTop="16dp" />
+            <View android:layout_width="72dp" android:layout_height="1dp" android:layout_marginTop="16dp" android:background="@drawable/gold_divider" />
+            <EditText android:id="@+id/registration_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:hint="@string/name_label" android:inputType="textPersonName" android:focusable="false" android:cursorVisible="false" android:importantForAutofill="no" android:layout_marginTop="16dp" />
+            <EditText android:id="@+id/registration_roll" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:hint="@string/roll_label" android:inputType="textCapCharacters" android:focusable="false" android:cursorVisible="false" android:importantForAutofill="no" />
+            <EditText android:id="@+id/registration_email" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:hint="@string/email_label" android:inputType="textEmailAddress" android:focusable="false" android:cursorVisible="false" android:importantForAutofill="no" />
+            <CheckBox android:id="@+id/confirm_details" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/confirm_details" android:layout_marginTop="8dp" />
+            <TextView android:id="@+id/registration_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Body" android:textColor="@color/error" android:visibility="gone" android:paddingTop="8dp" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/confirm_registration" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/confirm_registration" android:layout_marginTop="12dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

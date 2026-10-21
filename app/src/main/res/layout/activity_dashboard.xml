@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout android:id="@+id/dashboard_content" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:visibility="gone">
+<androidx.fragment.app.FragmentContainerView android:id="@+id/profile_container" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+<com.google.android.material.bottomnavigation.BottomNavigationView android:id="@+id/bottom_navigation" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/primary" app:menu="@menu/bottom_navigation" app:labelVisibilityMode="labeled" app:itemIconTint="@color/navigation_tint" app:itemTextColor="@color/navigation_tint" app:elevation="0dp" />
+</LinearLayout>
+<LinearLayout android:id="@+id/session_gate" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="24dp">
+<ProgressBar android:id="@+id/progress" android:layout_width="40dp" android:layout_height="40dp" android:contentDescription="@string/loading" />
+<TextView android:id="@+id/session_error" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Body" android:text="@string/error_storage" android:visibility="gone" android:gravity="center"/>
+<com.google.android.material.button.MaterialButton android:id="@+id/retry" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/retry" android:visibility="gone"/>
+</LinearLayout></FrameLayout>

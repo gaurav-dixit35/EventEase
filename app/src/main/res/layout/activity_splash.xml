@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+    <include
+        layout="@layout/view_brand" />
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.EventEase.Heading"
+        android:gravity="center"
+        android:textColor="@color/on_primary"
+        android:textSize="40sp"
+        android:layout_marginTop="24dp" />
+    <View
+        android:id="@+id/loading_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/gold_divider" />
+    <TextView
+        android:id="@+id/tagline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_tagline"
+        android:textAppearance="@style/TextAppearance.EventEase.Body"
+        android:gravity="center"
+        android:textColor="@color/on_primary"
+        android:layout_marginTop="24dp" />
+    <TextView
+        android:id="@+id/splash_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/error_storage"
+        android:textAppearance="@style/TextAppearance.EventEase.Body"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/on_primary"
+        android:layout_marginTop="24dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/retry" />
+</LinearLayout>

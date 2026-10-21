@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/scan_toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" android:background="@color/primary" app:title="@string/scan_ticket" app:titleTextColor="@color/on_primary" app:navigationIcon="@drawable/ic_back" app:navigationIconTint="@color/on_primary" app:navigationContentDescription="@string/back" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="28dp">
+        <ImageView android:layout_width="80dp" android:layout_height="64dp" android:src="@drawable/timscdr_crest_white" android:contentDescription="@string/crest_description" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/scan_ticket_instructions" android:textAppearance="@style/TextAppearance.EventEase.Body" android:gravity="center" android:layout_marginTop="20dp" />
+        <ProgressBar android:id="@+id/scan_progress" android:layout_width="36dp" android:layout_height="36dp" android:visibility="gone" android:layout_marginTop="20dp" />
+        <TextView android:id="@+id/scan_result" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Heading" android:gravity="center" android:visibility="gone" android:layout_marginTop="16dp" android:accessibilityLiveRegion="polite" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/scan_ticket_action" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:text="@string/start_scan" android:layout_marginTop="24dp" />
+    </LinearLayout>
+</LinearLayout>

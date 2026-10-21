@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/attendees_toolbar"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary" app:title="@string/organizer_attendees_title"
+        app:titleTextColor="@color/on_primary" app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@color/on_primary" app:navigationContentDescription="@string/back"
+        app:logo="@drawable/timscdr_crest_white" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:padding="16dp">
+        <TextView android:id="@+id/attendees_event_title" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Heading" />
+        <TextView android:id="@+id/attendees_event_meta" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.EventEase.Body" />
+        <TextView android:id="@+id/attendees_summary" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="12dp"
+            android:textAppearance="@style/TextAppearance.EventEase.Body" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="12dp">
+            <com.google.android.material.button.MaterialButton android:id="@+id/attendees_scan_ticket"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:minHeight="48dp" android:text="@string/organizer_scan_for_event" android:textAllCaps="false" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/attendees_export"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp"
+                android:minHeight="48dp" android:text="@string/organizer_export_csv" android:textAllCaps="false" />
+        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout android:id="@+id/attendees_search_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="12dp" android:hint="@string/organizer_attendee_search"
+            app:startIconDrawable="@drawable/ic_search">
+            <com.google.android.material.textfield.TextInputEditText android:id="@+id/attendees_search"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"
+                android:inputType="text" android:imeOptions="actionSearch" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView android:id="@+id/attendees_empty" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="16dp"
+            android:text="@string/organizer_attendees_empty" android:textAppearance="@style/TextAppearance.EventEase.Body"
+            android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/attendees_list"
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+            android:layout_marginTop="8dp" android:clipToPadding="false" android:paddingBottom="16dp" />
+    </LinearLayout>
+</LinearLayout>

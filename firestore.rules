@@ -1,0 +1,168 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function organizer() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/organizers/$(request.auth.uid))
+        && get(/databases/$(database)/documents/organizers/$(request.auth.uid)).data.active == true;
+    }
+    function student() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/students/$(request.auth.uid))
+        && get(/databases/$(database)/documents/students/$(request.auth.uid)).data.role == 'student';
+    }
+    function ownsEvent(eventId) {
+      return organizer()
+        && get(/databases/$(database)/documents/events/$(eventId)).data.organizerUid == request.auth.uid;
+    }
+    function validEventArtwork(data) {
+      return !('bannerImageData' in data)
+        || (data.bannerImageData is string && data.bannerImageData.size() <= 27308);
+    }
+
+    // Organizer documents are provisioned by a trusted project administrator.
+    // Client apps can read their own access record, but can never grant themselves a role.
+    match /organizers/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Student attendee details are scoped to the anonymous Firebase identity on this device.
+    match /students/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.studentUid == uid
+        && request.resource.data.role == 'student'
+        && request.resource.data.name is string
+        && request.resource.data.rollNo is string
+        && request.resource.data.email is string
+        && request.resource.data.collegeName is string
+        && request.resource.data.rollKey is string;
+      allow delete: if false;
+    }
+
+    match /events/{eventId} {
+      // Event descriptions are public catalog data; registrations still require a student session.
+      allow read: if true;
+      allow create: if organizer()
+        && request.resource.data.organizerUid == request.auth.uid
+        && request.resource.data.registeredCount == 0
+        && request.resource.data.checkedInCount == 0
+        && request.resource.data.capacity is int
+        && request.resource.data.capacity > 0
+        && request.resource.data.title is string
+        && request.resource.data.category is string
+        && request.resource.data.description is string
+        && request.resource.data.venue is string
+        && request.resource.data.dateTime is int
+        && validEventArtwork(request.resource.data);
+      allow update: if (organizer() && resource.data.organizerUid == request.auth.uid
+          && request.resource.data.organizerUid == resource.data.organizerUid
+          && request.resource.data.id == resource.data.id
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'title', 'category', 'description', 'venue', 'dateTime', 'capacity',
+            'organizerName', 'bannerImageUrl', 'bannerImageData', 'updatedAt', 'archived'
+          ])
+          && validEventArtwork(request.resource.data)
+          && request.resource.data.capacity is int
+          && request.resource.data.capacity >= resource.data.registeredCount)
+        || (organizer() && resource.data.organizerUid == request.auth.uid
+          && request.resource.data.organizerUid == resource.data.organizerUid
+          && request.resource.data.id == resource.data.id
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'checkedInCount', 'lastCheckInRegistrationCode'
+          ])
+          && request.resource.data.checkedInCount == resource.data.checkedInCount + 1
+          && request.resource.data.lastCheckInRegistrationCode is string
+          && existsAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastCheckInRegistrationCode))
+          && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastCheckInRegistrationCode)).data.eventId == resource.data.id
+          && get(/databases/$(database)/documents/registrations/$(request.resource.data.lastCheckInRegistrationCode)).data.checkedIn == false
+          && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastCheckInRegistrationCode)).data.checkedIn == true)
+        || (student()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['registeredCount', 'lastRegistrationCode'])
+          && request.resource.data.registeredCount == resource.data.registeredCount + 1
+          && request.resource.data.registeredCount <= resource.data.capacity
+          && request.resource.data.lastRegistrationCode is string
+          && !exists(/databases/$(database)/documents/registrations/$(request.resource.data.lastRegistrationCode))
+          && existsAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastRegistrationCode))
+          && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastRegistrationCode)).data.eventId is int
+          && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastRegistrationCode)).data.eventId == resource.data.id
+          && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.lastRegistrationCode)).data.studentUid == request.auth.uid);
+      allow delete: if organizer() && resource.data.organizerUid == request.auth.uid
+        && resource.data.registeredCount == 0;
+    }
+
+    match /registrations/{code} {
+      allow get: if signedIn()
+        && (!exists(/databases/$(database)/documents/registrations/$(code))
+          || resource.data.studentUid == request.auth.uid
+          || resource.data.organizerUid == request.auth.uid
+          || (student() && resource.data.rollKey == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.rollKey));
+      allow list: if signedIn()
+        && (resource.data.studentUid == request.auth.uid
+          || resource.data.organizerUid == request.auth.uid
+          || (student() && resource.data.rollKey == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.rollKey));
+      allow create: if student()
+        && request.resource.data.registrationCode == code
+        && request.resource.data.studentUid == request.auth.uid
+        && request.resource.data.checkedIn == false
+        && request.resource.data.rollKey == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.rollKey
+        && request.resource.data.studentName == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.name
+        && request.resource.data.email == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.email
+        && request.resource.data.collegeName == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.collegeName
+        && exists(/databases/$(database)/documents/events/$(request.resource.data.eventId))
+        && get(/databases/$(database)/documents/events/$(request.resource.data.eventId)).data.registeredCount
+          < get(/databases/$(database)/documents/events/$(request.resource.data.eventId)).data.capacity
+        && getAfter(/databases/$(database)/documents/events/$(request.resource.data.eventId)).data.registeredCount
+          == get(/databases/$(database)/documents/events/$(request.resource.data.eventId)).data.registeredCount + 1
+        && existsAfter(/databases/$(database)/documents/registrationLocks/$(string(request.resource.data.eventId) + '_' + request.resource.data.rollKey));
+      allow update: if ownsEvent(resource.data.eventId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['checkedIn', 'checkedInAt'])
+        && resource.data.checkedIn == false
+        && request.resource.data.checkedIn == true
+        && getAfter(/databases/$(database)/documents/events/$(resource.data.eventId)).data.checkedInCount
+          == get(/databases/$(database)/documents/events/$(resource.data.eventId)).data.checkedInCount + 1
+        && getAfter(/databases/$(database)/documents/events/$(resource.data.eventId)).data.lastCheckInRegistrationCode == code;
+      // Keep registration history and event counters consistent; no client may remove tickets.
+      allow delete: if false;
+    }
+
+    match /registrationLocks/{lockId} {
+      allow get: if signedIn() && (!exists(/databases/$(database)/documents/registrationLocks/$(lockId))
+        || (student() && resource.data.rollKey == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.rollKey));
+      allow create: if student()
+        && request.resource.data.eventId is int
+        && request.resource.data.rollKey is string
+        && request.resource.data.registrationCode is string
+        && lockId == string(request.resource.data.eventId) + '_' + request.resource.data.rollKey
+        && request.resource.data.studentUid == request.auth.uid
+        && request.resource.data.rollKey == get(/databases/$(database)/documents/students/$(request.auth.uid)).data.rollKey
+        && !exists(/databases/$(database)/documents/registrationLocks/$(lockId))
+        && existsAfter(/databases/$(database)/documents/registrations/$(request.resource.data.registrationCode))
+        && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.registrationCode)).data.eventId == request.resource.data.eventId
+        && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.registrationCode)).data.rollKey == request.resource.data.rollKey
+        && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.registrationCode)).data.studentUid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/registrations/$(request.resource.data.registrationCode)).data.registrationCode == request.resource.data.registrationCode;
+      allow update, delete: if false;
+    }
+
+    match /system/{document} {
+      allow read: if signedIn() && document == 'ids';
+      allow create: if signedIn() && document == 'ids'
+        && ((request.resource.data.keys().hasOnly(['event'])
+              && request.resource.data.event == 1 && organizer())
+          || (request.resource.data.keys().hasOnly(['registration'])
+              && request.resource.data.registration == 1 && student()));
+      allow update: if signedIn() && document == 'ids'
+        && request.resource.data.keys().hasOnly(['event', 'registration'])
+        && ((request.resource.data.diff(resource.data).affectedKeys().hasOnly(['event'])
+              && organizer() && request.resource.data.event == resource.data.get('event', 0) + 1)
+          || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['registration'])
+              && student() && request.resource.data.registration == resource.data.get('registration', 0) + 1));
+      allow delete: if false;
+    }
+  }
+}

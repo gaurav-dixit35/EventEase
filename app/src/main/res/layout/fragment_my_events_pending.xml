@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <TextView android:id="@+id/my_events_heading" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Heading" android:text="@string/tab_my_events" android:paddingStart="20dp" android:paddingEnd="20dp" android:paddingTop="20dp" />
+        <View android:layout_width="72dp" android:layout_height="1dp" android:layout_marginStart="20dp" android:layout_marginTop="8dp" android:background="@drawable/gold_divider" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/my_events_list" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:paddingStart="20dp" android:paddingEnd="20dp" android:paddingBottom="20dp" android:clipToPadding="false" android:visibility="invisible" />
+    </LinearLayout>
+    <ProgressBar android:id="@+id/my_events_progress" android:layout_width="40dp" android:layout_height="40dp" android:layout_gravity="center" />
+    <TextView android:id="@+id/my_events_empty" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:textAppearance="@style/TextAppearance.EventEase.Body" android:text="@string/my_events_empty" android:padding="28dp" android:gravity="center" android:visibility="gone" />
+</FrameLayout>

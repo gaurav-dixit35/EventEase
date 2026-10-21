@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="28dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/registration_checkmark" android:textColor="@color/success" android:textSize="56sp" android:contentDescription="@string/registration_success" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/registration_success" android:textAppearance="@style/TextAppearance.EventEase.Heading" android:gravity="center" android:layout_marginTop="12dp" />
+    <TextView android:id="@+id/confirmation_event_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Heading" android:gravity="center" android:layout_marginTop="28dp" />
+    <TextView android:id="@+id/confirmation_event_summary" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.EventEase.Body" android:gravity="center" android:layout_marginTop="8dp" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/view_ticket" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/view_ticket" android:layout_marginTop="32dp" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/back_to_events" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="@string/back_to_events" android:layout_marginTop="8dp" />
+</LinearLayout>

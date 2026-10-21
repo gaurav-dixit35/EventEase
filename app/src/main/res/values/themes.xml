@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.EventEase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@color/on_accent</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.EventEase.Heading</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.EventEase.Heading</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.EventEase.Body</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.EventEase</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.EventEase</item>
+        <item name="materialButtonStyle">@style/Widget.EventEase.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.EventEase.Card</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="Theme.EventEase.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_crest_safe</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/primary</item>
+        <item name="postSplashScreenTheme">@style/Theme.EventEase.SplashContent</item>
+    </style>
+    <style name="Theme.EventEase.SplashContent" parent="Theme.EventEase">
+        <item name="android:windowBackground">@color/primary</item>
+    </style>
+</resources>
